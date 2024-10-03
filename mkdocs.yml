@@ -1,0 +1,4 @@
+site_name: Borgarred
+site_url: https://github.com/Borgarred/borgarred.github.io.git
+theme:
+  name: material
