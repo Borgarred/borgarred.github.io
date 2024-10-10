@@ -1,4 +1,4 @@
-# Hola y configuración de un servidor web Nginx
+# Instalación y configuración de un servidor web Nginx
 
 Primero de todo, actualizaremos e instalaremos el paquete de Nginx:
 
