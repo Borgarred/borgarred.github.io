@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install nginx
 ```
 
-![alt text](/site/assets/images/image-0.png)
+![alt text](/docs/assets/images/image-0.png)
 
 ### Comprobación de Nginx
 
