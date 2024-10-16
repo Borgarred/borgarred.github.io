@@ -1,4 +1,4 @@
-# Prueba 3 y configuración de un servidor web Nginx
+# Prueba 4 y configuración de un servidor web Nginx
 
 Primero de todo, actualizaremos e instalaremos el paquete de Nginx:
 
@@ -7,7 +7,7 @@ sudo apt update
 sudo apt install nginx
 ```
 
-![alt text](/docs/assets/images/image-0.png)
+![alt text](assets/images/image-0.png)
 
 ### Comprobación de Nginx
 
@@ -17,7 +17,7 @@ Comprobaremos que Nginx está funcionando:
 systemctl status nginx
 ```
 
-![alt text](/docs/assets/images/image-1.png)
+![alt text](assets/images/image-1.png)
 
 ### Creación de carpetas del sitio web
 
