@@ -2,7 +2,7 @@
 
 Primero de todo, actualizaremos e instalaremos el paquete de Nginx:
 
-```
+```bash
 sudo apt update
 sudo apt install nginx
 ```
@@ -13,7 +13,7 @@ sudo apt install nginx
 
 Comprobaremos que Nginx está funcionando:
 
-```
+```bash
 systemctl status nginx
 ```
 
@@ -23,7 +23,7 @@ systemctl status nginx
 
 Ahora vamos a crear las carpetas que contendrán todos los archivos del sitio web. Accedemos a la carpeta /var/www y creamos la carpeta de nuestro dominio:
 
-```
+```bash
 sudo mkdir -p /var/www/nombre_web/html`
 ```
 
@@ -35,13 +35,13 @@ Para poder hacerlo, debemos tener ya instalado Git.
 
 Ahora haremos que el propietario de esta carpeta y todo lo que haya dentro sea el usuario www-data, que normalmente es el usuario del servicio web:
 
-```
+```bash
 sudo chown -R www-data:www-data /var/www/nombre_web/html
 ```
 
 Le daremos permisos para que no nos dé un error de acceso no autorizado al entrar en el sitio web:
 
-```
+```bash
 sudo chmod -R 755 /var/www/nombre_web
 ```
 
@@ -64,7 +64,7 @@ Para que Nginx presente el contenido de nuestra web, es necesario crear un bloqu
 
 Con el comando:
 
-```
+```bash
 sudo nano /etc/nginx/sites-available/vuestro_dominio
 ```
 
@@ -76,13 +76,13 @@ En el editor de configuración pondremos lo siguiente:
 
 Y crearemos un archivo simbólico entre este archivo y el de sitios que están habilitados, para que se dé de alta automáticamente:
 
-```
+```bash
 sudo ln -s /etc/nginx/sites-available/nombre_web /etc/nginx/sites-enabled/
 ```
 
 Reiniciamos el servidor para aplicar la configuración:
 
-```
+```bash
 sudo systemctl restart nginx
 ```
 
@@ -92,7 +92,7 @@ Como aún no poseemos un servidor DNS que traduzca los nombres a IPs, debemos ha
 
 En Windows acceder a:
 
-```
+```makefile
 C:\Windows\System32\drivers\etc\hosts
 ```
 
@@ -122,20 +122,20 @@ Desde el archivo **/var/log/nginx/error.log** de nuestra máquina virtual podemo
 
 En primer lugar, lo instalaremos desde los repositorios:
 
-```
+```bash
 sudo apt-get update
 sudo apt-get install vsftpd
 ```
 
 Ahora vamos a crear una carpeta en nuestro home en Debian:
 
-```
+```bash
 mkdir /home/nombre_usuario/ftp
 ```
 
 Y ahora crearemos los certificados de seguridad necesarios para aportar la capa de cifrado a nuestra conexión (algo parecido a HTTPS):
 
-```
+```bash
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
 
@@ -143,7 +143,7 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 
 Y una vez realizados estos pasos, procedemos a realizar la configuración de vsftpd propiamente dicha:
 
-```
+```bash
 sudo nano /etc/vsftpd.conf
 ```
 
@@ -153,7 +153,7 @@ Ahora debemos eliminar las siguientes líneas:
 
 Y seguidamente añadiremos las siguientes líneas:
 
-```
+```bash
 rsa_cert_file=/etc/ssl/private/vsftpd.pem
 rsa_private_key_file=/etc/ssl/private/vsftpd.pem
 ssl_enable=YES
@@ -172,7 +172,7 @@ local_root=/home/nombre_usuario/ftp
 
 Tras guardar los cambios, reiniciamos el servicio para que coja la nueva configuración:
 
-```
+```bash
 sudo systemctl restart --now vsftpd
 ```
 
@@ -192,7 +192,7 @@ Para subirlo pulsamos clic derecho y “Subir”.
 
 Lo primero será generar los certificados:
 
-```
+```bash
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 ```
 
@@ -200,7 +200,7 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/privat
 
 Crear un grupo Diffie-Hellman:
 
-```
+```bash
 sudo openssl dhparam -out /etc/nginx/dhparam.pem 2048
 ```
 
@@ -208,13 +208,13 @@ sudo openssl dhparam -out /etc/nginx/dhparam.pem 2048
 
 Crear una configuración para SSL:
 
-```
+```bash
 sudo nano /etc/nginx/snippets/self-signed.conf
 ```
 
 Y poner lo siguiente:
 
-```
+```nginx
 ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
 ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 ```
@@ -223,13 +223,13 @@ ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 
 Crear una configuración para parámetros SSL:
 
-```
+```bash
 sudo nano /etc/nginx/snippets/ssl-params.conf
 ```
 
 Y añadir lo siguiente:
 
-```
+```nginx
 Copiar código
 ssl_protocols TLSv1.2 TLSv1.3;
 ssl_prefer_server_ciphers on;
@@ -251,7 +251,7 @@ add_header X-XSS-Protection "1; mode=block";
 
 Editar el archivo de configuración del sitio
 
-```
+```bash
 sudo nano /etc/nginx/sites-available/nombre_web
 ```
 
@@ -260,38 +260,26 @@ sudo nano /etc/nginx/sites-available/nombre_web
 Habilitar la nueva configuración y reiniciar Nginx.
 Crear el enlace simbólico (si aún no está hecho):
 
-```
+```bash
 sudo ln -s /etc/nginx/sites-available/nombre_web /etc/nginx/sites-enabled/
 ```
 
 Reiniciar Nginx:
 
-```
+```bash
 sudo systemctl restart nginx
 ```
 
 Ahora ya podremos acceder a nuestra web buscando:
 
-```
+```arduino
 https://nombre_web
 ```
 
 o
 
-```
+```arduino
 http://nombre_web
 ```
 
 ![alt text](/img/image-20.png)
-
-# Autenticación en Nginx
-
-Para esta práctica podemos utilizar la herramienta openssl para crear las contraseñas.
-
-En primer lugar debemos comprobar si el paquete está instalado:
-
-```
-dpkg -l | grep openssl
-```
-
-Y si no lo estuviera, instalarlo.
