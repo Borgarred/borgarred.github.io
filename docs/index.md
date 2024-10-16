@@ -1,4 +1,4 @@
-# Instalación y configuración de un servidor web Nginx
+# Prueba y configuración de un servidor web Nginx
 
 Primero de todo, actualizaremos e instalaremos el paquete de Nginx:
 
