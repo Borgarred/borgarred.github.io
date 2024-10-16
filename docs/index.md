@@ -1,4 +1,4 @@
-# Prueba 4 y configuración de un servidor web Nginx
+# Instalación y configuración de un servidor web Nginx
 
 Primero de todo, actualizaremos e instalaremos el paquete de Nginx:
 
@@ -31,7 +31,7 @@ Dentro de la carpeta /html, tendremos que clonar el repositorio https://github.c
 
 Para poder hacerlo, debemos tener ya instalado Git.
 
-![alt text](/site/assets/images/image-2.png)
+![alt text](assets/images/image-2.png)
 
 Ahora haremos que el propietario de esta carpeta y todo lo que haya dentro sea el usuario www-data, que normalmente es el usuario del servicio web:
 
@@ -45,7 +45,7 @@ Le daremos permisos para que no nos dé un error de acceso no autorizado al entr
 sudo chmod -R 755 /var/www/nombre_web
 ```
 
-![alt text](/site/assets/images/image-3.png)
+![alt text](assets/images/image-3.png)
 
 ### Comprobación del servidor
 
@@ -56,7 +56,7 @@ http://IP_máquina_virtual
 ```
 
 Deberá aparecer algo así:
-![alt text](/site/assets/images/image-4.png)
+![alt text](assets/images/image-4.png)
 
 ### Configuración del bloque de servidor
 
@@ -70,7 +70,7 @@ sudo nano /etc/nginx/sites-available/vuestro_dominio
 
 En el editor de configuración pondremos lo siguiente:
 
-![alt text](/site/assets/images/image-5.png)
+![alt text](assets/images/image-5.png)
 
 (Donde la ruta root será la carpeta donde clonamos el repositorio anterior en la que se encuentra nuestro archivo index.html).
 
@@ -104,19 +104,19 @@ Y deberemos añadirle la línea:
 
 Donde debéis sustituir la IP por la que tenga vuestra máquina virtual.
 
-![alt text](/site/assets/images/image-6.png)
+![alt text](assets/images/image-6.png)
 
 Podemos comprobar que funcione haciendo ping.
 
-![alt text](/site/assets/images/image-7.png)
+![alt text](assets/images/image-7.png)
 
 Desde el archivo **/var/log/nginx/access.log** de nuestra máquina virtual podemos consultar las peticiones a nuestra web.
 
-![alt text](/site/assets/images/image-8.png)
+![alt text](assets/images/image-8.png)
 
 Desde el archivo **/var/log/nginx/error.log** de nuestra máquina virtual podemos consultar cualquier error que se haya registrado.
 
-![alt text](/site/assets/images/image-9.png)
+![alt text](assets/images/image-9.png)
 
 ### Transferir archivos desde la máquina local a la máquina virtual mediante FTP
 
@@ -139,7 +139,7 @@ Y ahora crearemos los certificados de seguridad necesarios para aportar la capa 
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
 ```
 
-![alt text](/site/assets/images/image-10.png)
+![alt text](assets/images/image-10.png)
 
 Y una vez realizados estos pasos, procedemos a realizar la configuración de vsftpd propiamente dicha:
 
@@ -149,7 +149,7 @@ sudo nano /etc/vsftpd.conf
 
 Ahora debemos eliminar las siguientes líneas:
 
-![alt text](/site/assets/images/image-11.png)
+![alt text](assets/images/image-11.png)
 
 Y seguidamente añadiremos las siguientes líneas:
 
@@ -168,7 +168,7 @@ ssl_ciphers=HIGH
 local_root=/home/nombre_usuario/ftp
 ```
 
-![alt text](/site/assets/images/image-12.png)
+![alt text](assets/images/image-12.png)
 
 Tras guardar los cambios, reiniciamos el servicio para que coja la nueva configuración:
 
@@ -178,7 +178,7 @@ sudo systemctl restart --now vsftpd
 
 Ya podemos acceder a nuestro servidor mediante un cliente FTP como por ejemplo Filezilla. Vamos a conectarnos mediante SFTP. Debemos introducir los datos de nuestra máquina y el puerto 22.
 
-![alt text](/site/assets/images/image-13.png)
+![alt text](assets/images/image-13.png)
 
 Al pulsar conexión rápida, nos aparecerá un aviso que debemos aceptar.
 
@@ -186,7 +186,7 @@ A continuación, buscaremos el archivo que queremos subir a nuestro servidor en 
 
 Para subirlo pulsamos clic derecho y “Subir”.
 
-![alt text](/site/assets/images/image-14.png)
+![alt text](assets/images/image-14.png)
 
 ### Añadir certificados SSL y acceder mediante HTTPS
 
@@ -196,7 +196,7 @@ Lo primero será generar los certificados:
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
 ```
 
-![alt text](/site/assets/images/image-15.png)
+![alt text](assets/images/image-15.png)
 
 Crear un grupo Diffie-Hellman:
 
@@ -204,7 +204,7 @@ Crear un grupo Diffie-Hellman:
 sudo openssl dhparam -out /etc/nginx/dhparam.pem 2048
 ```
 
-![alt text](/site/assets/images/image-16.png)
+![alt text](assets/images/image-16.png)
 
 Crear una configuración para SSL:
 
@@ -219,7 +219,7 @@ ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
 ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
 ```
 
-![alt text](/site/assets/images/image-17.png)
+![alt text](assets/images/image-17.png)
 
 Crear una configuración para parámetros SSL:
 
@@ -247,7 +247,7 @@ add_header X-Frame-Options DENY;
 add_header X-XSS-Protection "1; mode=block";
 ```
 
-![alt text](/site/assets/images/image-18.png)
+![alt text](assets/images/image-18.png)
 
 Editar el archivo de configuración del sitio
 
@@ -255,7 +255,7 @@ Editar el archivo de configuración del sitio
 sudo nano /etc/nginx/sites-available/nombre_web
 ```
 
-![alt text](/site/assets/images/image-19.png)
+![alt text](assets/images/image-19.png)
 
 Habilitar la nueva configuración y reiniciar Nginx.
 Crear el enlace simbólico (si aún no está hecho):
@@ -282,7 +282,7 @@ o
 http://nombre_web
 ```
 
-![alt text](/site/assets/images/image-20.png)
+![alt text](assets/images/image-20.png)
 
 # Práctica 2.2 – Autenticación en Nginx
 
