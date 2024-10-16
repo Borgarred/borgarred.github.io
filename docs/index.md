@@ -283,3 +283,17 @@ http://nombre_web
 ```
 
 ![alt text](/docs/assets/images/image-20.png)
+
+# Práctica 2.2 – Autenticación en Nginx
+
+### Paquetes necesarios
+
+Para esta práctica podemos utilizar la herramienta openssl para crear las contraseñas.
+
+En primer lugar debemos comprobar si el paquete está instalado:
+
+```
+dpkg -l | grep openssl
+```
+
+Y si no lo estuviera, instalarlo.
