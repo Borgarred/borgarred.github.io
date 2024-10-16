@@ -284,8 +284,6 @@ http://nombre_web
 
 ![alt text](assets/images/image-20.png)
 
-# Práctica 2.2 – Autenticación en Nginx
-
 ### Paquetes necesarios
 
 Para esta práctica podemos utilizar la herramienta openssl para crear las contraseñas.
