@@ -373,3 +373,23 @@ Borra las dos líneas que hacen referencia a la autenticación básica en el loc
 
 ### Combinación de la autenticación básica con la restricción de acceso por IP
 
+### Tarea 1
+
+Configura Nginx para que no deje acceder con la IP de la máquina anfitriona al directorio raíz de una de tus dos webs. Modifica su server block o archivo de configuración. Comprueba como se deniega el acceso:
+
+![alt text](assets/images/image-29.png)
+
+Al intentar acceder nos encontramos con error
+
+![alt text](assets/images/image-30.png)
+
+error.log:
+![alt text](assets/images/image-31.png)
+
+### Tarea 2
+
+Configura Nginx para que desde tu máquina anfitriona se tenga que tener tanto una IP válida como un usuario válido, ambas cosas a la vez, y comprueba que sí puede acceder sin problemas
+
+![alt text](image-2.png)
+![alt text](image.png)
+![alt text](image-1.png)
