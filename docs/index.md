@@ -390,9 +390,9 @@ error.log:
 
 Configura Nginx para que desde tu máquina anfitriona se tenga que tener tanto una IP válida como un usuario válido, ambas cosas a la vez, y comprueba que sí puede acceder sin problemas
 
-![alt text](image-2.png)
-![alt text](image.png)
-![alt text](image-1.png)
+![alt text](assets/images/image-32.png)
+![alt text](assets/images/image-33.png)
+![alt text](assets/images/image-34.png)
 
 ### Cuestión 1
 
