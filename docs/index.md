@@ -393,3 +393,83 @@ Configura Nginx para que desde tu máquina anfitriona se tenga que tener tanto u
 ![alt text](image-2.png)
 ![alt text](image.png)
 ![alt text](image-1.png)
+
+### Cuestión 1
+
+Supongamos que yo soy el cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, equivocándome al poner el usuario y contraseña. ¿Podré acceder?¿Por qué?
+
+```
+location /web_muy_guay {
+    #...
+    satisfy all;    
+    deny  172.1.10.6;
+    allow 172.1.10.15;
+    allow 172.1.3.14;
+    deny  all;
+    auth_basic "Cuestión final 1";
+    auth_basic_user_file conf/htpasswd;
+}
+```
+
+No, porque aunque la ip sea admitida, debe satisfacer todos los métodos de autentificación como indica el `satisfy all`
+
+### Cuestión 2
+
+ask "Cuestión 1" Supongamos que yo soy el cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, introduciendo correctamente usuari y contraseña. ¿Podré acceder?¿Por qué?
+
+```
+location /web_muy_guay {
+    #...
+    satisfy all;    
+    deny  all;
+    deny  172.1.10.6;
+    allow 172.1.10.15;
+    allow 172.1.3.14;
+
+    auth_basic "Cuestión final 2: The revenge";
+    auth_basic_user_file conf/htpasswd;
+}
+```
+
+En este caso, aunque introduzcamos correctamente el usuario y contraseña, al estar `deny all` al principio del todo deniega el acceso a todas las ips. Por lo que no podríamos acceder.
+
+### Cuestión 3
+
+Supongamos que yo soy el cliente con la IP 172.1.10.15 e intento acceder al directorio web_muy_guay de mi sitio web, introduciendo correctamente usuario y contraseña. ¿Podré acceder?¿Por qué?
+
+```
+location /web_muy_guay {
+    #...
+    satisfy any;    
+    deny  172.1.10.6;
+    deny 172.1.10.15;
+    allow 172.1.3.14;
+
+    auth_basic "Cuestión final 3: The final combat";
+    auth_basic_user_file conf/htpasswd;
+}
+```
+
+No, porque nuestra ip está denegada.
+
+### Cuestión 4
+A lo mejor no sabéis que tengo una web para documentar todas mis excursiones espaciales con Jeff, es esta: Jeff Bezos y yo
+
+Supongamos que quiero restringir el acceso al directorio de proyectos porque es muy secreto, eso quiere decir añadir autenticación básica a la URL:Proyectos
+
+Completa la configuración para conseguirlo:
+
+```
+    server {
+        listen 80;
+        listen [::]:80;
+        root /var/www/freewebsitetemplates.com/preview/space-science;
+        index index.html index.htm index.nginx-debian.html;
+        server_name freewebsitetemplates.com www.freewebsitetemplates.com;
+        location /Proyectos{
+            auth_basic "Cuestión final 4";
+            auth_basic_user_file conf/htpasswd;
+            try_files $uri $uri/ =404;
+        }
+    }
+```
