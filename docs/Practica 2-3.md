@@ -4,18 +4,18 @@
 
 Para que todo quede más diferenciado y os quede más claro que la petición está pasando por el proxy inverso y llega al servidor web destino, vamos a hacer que cada uno de los servidores escuche las peticiones en un puerto distinto.
 
-En primer lugar, debéis cambiar el nombre que tuviera vuestra web por el de webserver, ello implica:
+1.- En primer lugar, debéis cambiar el nombre que tuviera vuestra web por el de webserver, ello implica:
 
-1.- Cambiar el nombre del archivo de configuración de sitios disponibles par Nginx
+- Cambiar el nombre del archivo de configuración de sitios disponibles par Nginx
 
 ```
 sudo mv /etc/nginx/sites-available/mi_sitio /etc/nginx/sites-available/webserver
 ```
         
 
-Cambiar el nombre del sitio web dentro de este archivo de configuración donde haga falta
+- Cambiar el nombre del sitio web dentro de este archivo de configuración donde haga falta
 
-No os olvidéis de eliminar el link simbólico antiguo con el comando unlink nombre_del_link dentro de la carpeta sites-enabled y crear el nuevo para el nuevo nombre de archivo.
+- No os olvidéis de eliminar el link simbólico antiguo con el comando unlink nombre_del_link dentro de la carpeta sites-enabled y crear el nuevo para el nuevo nombre de archivo.
 
 ```
 sudo unlink /etc/nginx/sites-enabled/mi_sitio
