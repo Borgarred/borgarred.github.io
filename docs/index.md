@@ -295,3 +295,81 @@ dpkg -l | grep openssl
 ```
 
 Y si no lo estuviera, instalarlo.
+
+### Creación de usuarios y contraseñas para el acceso web
+Creamos un archivo oculto llamado “.htpasswd” en el directorio de configuración /etc/nginx donde guardar nuestros usuarios y contraseñas:
+
+```
+sudo sh -c "echo -n 'vuestro_nombre:' >> /etc/nginx/.htpasswd"
+```
+Ahora crearemos un pasword cifrado para el usuario:
+
+```
+sudo sh -c "openssl passwd -apr1 >> /etc/nginx/.htpasswd"
+```
+
+Este proceso se podrá repetir para tantos usuarios como haga falta.
+
+Crea dos usuarios, uno con tu nombre y otro con tu primer apellido
+Comprueba que el usuario y la contraseña aparecen cifrados en el fichero:
+```
+cat /etc/nginx/.htpasswd
+```
+![alt text](assets/images/image-21.png)
+
+### Configurando el servidor Nginx para usar autenticación básica
+
+Editaremos la configuración del server block sobre el cual queremos aplicar la restricción de acceso.
+
+```
+sudo nano /etc/nginx/sites-available/nombre_web
+```
+Utilizaremos la directiva `auth_basic` dentro del location y le pondremos el nombre a nuestro dominio que será mostrado al usuario al solicitar las credenciales. Por último, configuramos Nginx para que utilice el fichero que previamente hemos creado con la directiva `auth_basic_user_file`:
+
+![alt text](assets/images/image-22.png)
+
+Una vez terminada la configuración, reiniciamos el servicio.
+```
+sudo systemctl restart nginx
+```
+
+### Comprobación 1
+
+Comprueba desde tu máquina física/anfitrión que puedes acceder a http://nombre-sitio-web y que se te solicita autenticación
+
+![alt text](assets/images/image-23.png)
+
+### Comprobación 2
+
+Comprueba que si decides cancelar la autenticación, se te negará el acceso al sitio con un error. ¿Qué error es?
+
+![alt text](assets/images/image-24.png)
+
+### Tarea 1
+
+Intenta entrar primero con un usuario erróneo y luego con otro correcto. Puedes ver todos los sucesos y registros en los logs access.log y error.log
+
+Adjunta una captura de pantalla de los logs donde se vea que intentas entrar primero con un usuario inválido y con otro válido. Indica dónde podemos ver los errores de usuario inválido o no encontrado, así como donde podemos ver el número de error que os aparecía antes
+
+Usuario inválido:
+
+access.log
+![alt text](assets/images/image-25.png)
+error.log:
+![alt text](assets/images/image-26.png)
+
+Usuario válido:
+
+access.log
+![alt text](assets/images/image-27.png)
+error.log:
+No hay error ya que el usuario es válido.
+
+### Tarea 2
+
+Borra las dos líneas que hacen referencia a la autenticación básica en el location del directorio raíz. Tras ello, añade un nuevo location debajo con la autenticación básica para el archivo/sección contact.html únicamente.
+
+![alt text](assets/images/image-28.png)
+
+### Combinación de la autenticación básica con la restricción de acceso por IP
+
