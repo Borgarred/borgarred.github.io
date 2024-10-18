@@ -28,3 +28,33 @@ sudo ln -s /etc/nginx/sites-available/webserver /etc/nginx/sites-enabled/
 ![alt text](assets/images/image-30.png)
 
 3.- Reiniciar Nginx
+
+### Nginx proxy inverso
+
+Ahora en la máquina clonada debemos crear el proxy inverso:
+
+Crear un archivo de configuración en sites-available con el nombre ejemplo-proxy (o el que tuvieráis vosotros)
+
+```
+sudo nano /etc/nginx/sites-available/proxy-ejemplo
+```
+
+Este archivo de configuración será más simple, tendrá la siguiente forma
+
+![alt text](assets/images/image-31.png)
+
+A continuación crear el enlace simbólico para el proxy inverso:
+
+```
+ln -s /etc/nginx/sites-available/ejemplo-proxy /etc/nginx/sites-enabled/
+```
+
+Reiniciar Nginx en el servidor proxy:
+
+```
+systemctl restart nginx
+```
+
+Para terminar, no olvidemos modificar el archivo host de nuestra máquina física para acceder al proxy inverso.
+
+![alt text](assets/images/image-32.png)
