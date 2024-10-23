@@ -58,3 +58,10 @@ systemctl restart nginx
 Para terminar, no olvidemos modificar el archivo host de nuestra máquina física para acceder al proxy inverso.
 
 ![alt text](assets/images/image-32.png)
+
+### Comprobaciones:
+
+Añadiendo cabeceras:
+![alt text](assets/images/image-33.png)
+
+![alt text](assets/images/image-34.png)
